@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll Number Input</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Lobster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://t3.ftcdn.net/jpg/08/21/56/38/360_F_821563852_MafBbQmNZdS7H4cqM7nbF5zeWIqn6s7j.jpg');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: moveBackground 10s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .logo {
+            max-width: 150px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            font-family: 'Lobster', cursive;
+            border-radius: 20px;
+            padding: 10px; 
+            margin: 10px 0;
+            opacity: 0; 
+            transform: translateY(-50px); 
+            animation: slideIn 1s forwards; 
+        }
+
+        h1 {
+            font-size: 2.5rem; 
+            animation-delay: 0.5s; 
+        }
+
+        h2 {
+            font-size: 1.8rem; 
+            animation-delay: 1s; 
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin: 20px 0;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: none;
+            background-color: hsl(197, 70%, 34%);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            animation: buttonPulse 1s infinite alternate;
+            opacity: 1; 
+        }
+
+        @keyframes buttonPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        button:hover {
+            background-color: #6ec3d8; 
+            transform: scale(1.1); 
+        }
+
+        .error {
+            color: red;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            input[type="text"] {
+                width: 80%; /* Full width on smaller screens */
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2qcvTM5BuJDzSY-_c0WKCcdXtSvOyp17cQqTJgBbjfRa9KDXT35U7U-6KJ2fCU5X7Bhk&usqp=CAU" alt="Logo" class="logo">
+    <div>
+        <h1 id="welcomeText">Welcome to Your Assignment Result</h1>
+        <h2 id="assignedText">Assigned by Student Leader Aleema Khan</h2>
+        <form onsubmit="event.preventDefault(); getResult();">
+            <input type="text" id="rollNumber" placeholder="Enter Your Roll Number" required>
+            <button type="submit">Get Result</button>
+        </form>
+        <p class="error" id="errorMessage"></p>
+    </div>
+
+    <script>
+        const colors = ['#FFCCCB', '#CCFFCC', '#CCCCFF', '#FFDDCC', '#FFDDAA', '#E3F2FD', '#FFEBEE', '#F0E68C', '#FFF9C4', '#FFE0B2'];
+        let colorIndex = 0;
+
+        function changeBackgroundColor() {
+            const welcomeText = document.getElementById('welcomeText');
+            const assignedText = document.getElementById('assignedText');
+
+            welcomeText.style.backgroundColor = colors[colorIndex];
+            assignedText.style.backgroundColor = colors[colorIndex];
+
+            colorIndex = (colorIndex + 1) % colors.length; 
+        }
+
+        function getResult() {
+            const rollNumber = document.getElementById('rollNumber').value;
+            const students = [
+    { roll_number: '101', name: 'Horiya', project: 'Portfolio Web', marks: '85.25', percentage: '85.25%', grade: 'A', complement: 'Excellent work! Keep aiming high!' },
+    { roll_number: '102', name: 'Narmeen', project: 'Portfolio Web', marks: '79.25', percentage: '79.25%', grade: 'B', complement: 'Good effort! You’re on the right track!' },
+    { roll_number: '103', name: 'Narmeen', project: 'Diabetes Informative Web', marks: '83', percentage: '83%', grade: 'A', complement: 'Great job! Your hard work shows!' },
+    { roll_number: '104', name: 'Simra', project: 'Animated Website', marks: '90', percentage: '90%', grade: 'A+', complement: 'Outstanding performance! Truly impressive!' },
+    { roll_number: '105', name: 'Alishba', project: 'Portfolio Web', marks: '78', percentage: '78%', grade: 'C', complement: 'Decent work! Keep pushing yourself!' },
+    { roll_number: '106', name: 'Rubab', project: 'Portfolio Web', marks: '86', percentage: '86%', grade: 'A', complement: 'Well done! Your dedication is commendable!' },
+    { roll_number: '107', name: 'Nimra', project: 'OLX Static Web', marks: '87.25', percentage: '87.25%', grade: 'A+', complement: 'Fantastic job! Your creativity shines!' },
+    { roll_number: '108', name: 'Asma', project: 'Portfolio Web', marks: '80', percentage: '80%', grade: 'B', complement: 'Good job! Keep striving for excellence!' },
+    { roll_number: '109', name: 'Musfirah', project: 'Coffee Web', marks: '84.5', percentage: '84.5%', grade: 'A', complement: 'Nice work! You’re making great progress!' },
+    { roll_number: '110', name: 'Musfirah', project: 'Web Portfolio', marks: '83.5', percentage: '83.5%', grade: 'A', complement: 'Well done! Your effort is impressive!' },
+    { roll_number: '111', name: 'Aleema Khan', project: 'Portfolio Web', marks: '80', percentage: '80%', grade: 'B', complement: 'Good work! Keep up the positive attitude!' },
+];
+            const student = students.find(s => s.roll_number === rollNumber);
+
+            if (student) {
+                localStorage.setItem('studentInfo', JSON.stringify(student));
+                window.location.href = 'result.html'; 
+            } else {
+                document.getElementById('errorMessage').textContent = 'Invalid Roll Number';
+            }
+        }
+
+        setInterval(changeBackgroundColor, 1000); 
+    </script>
+</body>
+</html>

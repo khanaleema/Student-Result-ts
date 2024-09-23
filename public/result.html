@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&family=Great+Vibes&display=swap&family=Lobster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            animation: backgroundChange 10s infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        @keyframes backgroundChange {
+            0% { background: linear-gradient(90deg, #e0f7fa, #f1f8e9); }
+            25% { background: linear-gradient(90deg, #f1f8e9, #fff9c4); }
+            50% { background: linear-gradient(90deg, #fff9c4, #e3f2fd); }
+            75% { background: linear-gradient(90deg, #e3f2fd, #fce4ec); }
+            100% { background: linear-gradient(90deg, #fce4ec, #e0f7fa); }
+        }
+
+        .congrats {
+            font-size: 60px;
+            font-family: 'Great Vibes', cursive;
+            font-weight: bold;
+            color: #ff4081;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+            animation: bounceIn 2s ease-in-out forwards;
+            position: absolute;
+            top: 10%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: translateY(100px); }
+            50% { opacity: 1; transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ff4081;
+            box-shadow: 0px 0px 15px 5px rgba(255, 64, 129, 0.5);
+            max-width: 250px;
+            margin-top: 30px;
+            animation: slideIn 2s forwards;
+            display: none;
+            text-align: center;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .result {
+            font-size: 24px;
+            color: #444444;
+            font-weight: normal;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-family: 'Lobster', cursive;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            animation: fall 4s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        #announceButton {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #announceButton:hover {
+            background-color: #e91e63;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 600px) {
+            .congrats {
+                font-size: 40px; /* Smaller font for mobile */
+                top: 5%; /* Adjusted position */
+            }
+
+            .result-container {
+                max-width: 90%; /* Full width on small screens */
+                padding: 15px; /* Reduced padding */
+            }
+
+            .result {
+                font-size: 20px; /* Smaller font for mobile */
+            }
+
+            #announceButton {
+                font-size: 14px; /* Smaller button font */
+            }
+        }
+
+        @media (max-width: 400px) {
+            .congrats {
+                font-size: 30px; /* Even smaller font for very small screens */
+            }
+
+            .result {
+                font-size: 18px; /* Smaller result font */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="congrats" id="congrats">🎉 Congratulations <span id="student-name"></span>! 🎉</div>
+    <div class="result-container" id="result-container">
+        <div class="result">
+            <p id="studentInfo"></p>
+        </div>
+        <button id="announceButton">Announce Congratulations</button>
+    </div>
+
+    <script>
+        const student = JSON.parse(localStorage.getItem('studentInfo'));
+
+        if (student) {
+            const studentName = student.name;
+            document.getElementById('student-name').textContent = studentName;
+            document.getElementById('studentInfo').innerHTML = `
+                Project: ${student.project} <br>
+                Marks: ${student.marks} <br>
+                Percentage: ${student.percentage} <br>
+                Grade: ${student.grade} <br>
+                Complement: ${student.complement}
+            `;
+            document.getElementById('result-container').style.display = 'block';
+            blastConfetti();
+
+            document.getElementById('announceButton').onclick = () => announceCongratulations(studentName);
+        } else {
+            document.getElementById('studentInfo').textContent = 'No data found.';
+        }
+
+        function blastConfetti() {
+            for (let i = 0; i < 200; i++) {
+                setTimeout(addConfetti, Math.random() * 500);
+            }
+            setTimeout(startContinuousConfetti, 3000);
+        }
+
+        function addConfetti() {
+            const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 4000);
+        }
+
+        function startContinuousConfetti() {
+            setInterval(addConfetti, 200);
+        }
+
+        function announceCongratulations(name) {
+            const message = `Congratulations ${name}!`;
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
